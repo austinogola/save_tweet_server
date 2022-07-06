@@ -10,9 +10,10 @@ router.post("/",async(req,res)=>{
     console.log(req.body);
 
     const tweet_id=String(twtUrl.split('/').slice(-1))
-    console.log(`${tweet_id}.../`);
+    // console.log(`${tweet_id}.../`);
 
     const tweet=await details.tweet(tweet_id)
+
 
     const user=await details.user(tweet.data['author_id'])
 

@@ -1,4 +1,4 @@
-const templateStart=`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -88,115 +88,21 @@ const templateStart=`<!DOCTYPE html>
   <body>
     </div>
     <blockquote class="twitter-tweet"><p lang="en" dir="ltr">
-      <div class="profile">`
-
-
-const addImage=(imageUrl)=>{
-  let html=`  <img src="${imageUrl}" alt="Avatar" class="avatar">`
-
-  return html
-}
-
-const addUser=(name,username)=>{
-  let html=`<div id="username"> ${name} <br/><a href="#">@${username}</a></div></div>`
-
-  return html
-}
-
-const addText=(text)=>{
-  let html=`<p>${text}</p>`
-
-  return html
-}
-
-
-const addMets=(created_at,source)=>{
-
-
-  // let html=`<div class="mets">
-  //   <a href="#">12:00 PM June 11, 2022 from Nairobi, Kenya</a>
-  // </div>`
-  const mets=created_at.split('-')
-  const year=mets[0]
-  let time=mets[2].slice(3,8)
-  parseInt(time.split(0,2))>=12?time+=' PM':time+=' AM'
-
-  const month=getMonth(parseInt(mets[1]))
-
-  const date=mets[2].slice(0,2)
-  console.log(date);
-
-  // const date=new Date(created_at)
-  // console.log(date.getUTCHours()); // Hours
-  // console.log(date.getUTCMinutes());
-  // console.log(date.getUTCSeconds());
-  // console.log(date.getUTCMonth())
-
-
-  let html=`<div class="mets"><a href="#">${time} ${month} ${date}, ${year}	&#183; ${source} </a></div>`
-
-  return html
-}
-
-// const getDate=(created_at)=>{
-//   var months = [
-//     "January", "February", "March", "April", "May", "June",
-//     "July", "August", "September", "October", "November", "December"
-//   ];
-//
-//   let year=created_at[0:4]
-//   let month=months[6]
-//   let date=created_at[8:10]
-// }
-const getMonth=(n)=>{
-  var months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ];
-
-    return months[n-1]
-}
-
-const formatCounts=(count)=>{
-  if (count>1000) {
-    if (count>10000) {
-      count=(parseInt(count)/1000).toFixed(1)
-      count=count.toString()+'K'
-      return count;
-    }else {
-      count=count.toLocaleString()
-      return count;
-    }
-  }
-  return count;
-}
-const addStats=(retweets,quotes,likes)=>{
-  retweets=formatCounts(retweets)
-  quotes=formatCounts(quotes)
-  likes=formatCounts(likes)
-  let html=`<div class="">
+      <div class="profile">  <img src="https://pbs.twimg.com/profile_images/1237944036486516736/xKTs0UGJ_normal.jpg" alt="Avatar" class="avatar"><div id="username"> hy <br/><a href="#">@TheMindOfHY</a></div></div><p>- Jay-Z gave us Kanye<br/>- Kanye gave us Travis Scott<br/>- Travis Scott gave us Don Toliver<br/>- Kendrick gave us Baby Keem<br/>- Lil Wayne gave us Drake<br/><br/>And Drake gave us Smiley &amp; Makonnen…</p><div class="mets"><a href="#">16:32 PM July 05, 2022	&#183; Twitter for iPhone </a></div><div class="">
   <div class="stats">
       <a href="#">
-        ${retweets} Retweets
+        1,425 Retweets
       </a>
       <a href="#">
-        ${quotes} Quote Tweets
+        1,082 Quote Tweets
       </a>
       <a href="#">
-        ${likes} Likes
+        24.2K Likes
       </a>
     </div>
-  </div>`
-
-  return html
-}
-
-const templateEnd=`</blockquote>
+  </div></blockquote>
 <script>
 feather.replace()
 </script>
 </body>
-</html>`
-
-
-module.exports = {templateStart,addImage,addUser,addText,addMets,addStats,templateEnd};
+</html>
