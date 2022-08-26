@@ -5,6 +5,12 @@
     <title>Tweet page</title>
     <script src="https://unpkg.com/feather-icons"></script>
     <style media="screen">
+      .wrapperGG{
+        max-width:740px;
+        display:flex;
+        justify-content:center;
+        padding:10px;
+      }
       blockquote.twitter-tweet {
         display: inline-block;
         font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
@@ -18,7 +24,8 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
         margin: 10px 5px;
         padding: 0 16px 16px 16px;
-        max-width: 468px;
+        min-width: 490px;
+        width: 100%;
       }
       blockquote.twitter-tweet p {
         font-size: 18px;
@@ -46,6 +53,9 @@
         display: flex;
         margin-bottom: 16px;
       }
+      span{
+        color:#34A5F2;
+      }
       #username{
         position: relative;
         top: 3px;
@@ -67,8 +77,7 @@
       }
       .stats{
         display: flex;
-        justify-content: space-between;
-        width: 50%;
+        width: 80%;
       }
       .stats a{
         color: #717F8A;
@@ -77,7 +86,7 @@
         text-decoration: none;
         outline: 0 none;
         margin: 3px;
-        margin-right: 2px;
+        margin-right: 10px;
       }
       i{
         position: relative;
@@ -86,21 +95,30 @@
     </style>
   </head>
   <body>
-    </div>
-    <blockquote class="twitter-tweet"><p lang="en" dir="ltr">
-      <div class="profile">  <img src="https://pbs.twimg.com/profile_images/1502580869537669121/XBIa4RWv_normal.jpg" alt="Avatar" class="avatar"><div id="username"> Ja Loka <br/><a href="#">@_fels1</a></div></div><p>The good thing about using Taxis in Nairobi is that whenever they develop mechanical problems or get into trouble with the police, you just alight and take another one. You leave the owner to sort his mess. They are also very cheap compared to fueling and maintaining an own car.</p><div class="mets"><a href="#">09:00 AM June 11, 2022 from Nairobi, Kenya </a></div><div class="">
+    <div class="wrapperGG">
+      <blockquote class="twitter-tweet"><p lang="en" dir="ltr">
+        <div class="profile">
+    <img src="https://pbs.twimg.com/profile_images/934381355231723522/TJ5PuWkP_normal.jpg" alt="Avatar" class="avatar"><div id="username"> Culture Crave 🍿  <img src="https://i.postimg.cc/63ngHVjT/verified-badge-16.png" style='position:relative;top:3px;'alt="verified"><br/>
+  <a href="#">@CultureCrave</a>
+  </div>
+  </div><p>Warner Bros Discovery only has enough money to release two movies the rest of the year <br/><br/>• <span>#BlackAdam</span><br/>• <span>#DontWorryDarling</span> <br/><br/>(via <span>@Borys_Kit</span>)</p>
+      <div class="media" style="height:480px;margin-bottom:15px;display:grid;grid-template-columns:50% 50%;grid-gap:3px;border:1px solid #CFD9DE;border-radius:15px;overflow:hidden;"><div class="" style='background-image:url("https://pbs.twimg.com/media/Fa9SPCrUsAEJAOD.jpg");background-size:cover;background-position:center;background-repeat:no-repeat;'>
+
+        </div><div class="" style='background-image:url("https://pbs.twimg.com/media/Fa9S26LUIAAhkiR.jpg");background-size:cover;background-position:center;background-repeat:no-repeat;'>
+
+        </div></div><div class="mets"><a href="#">0:53 AM &#183; August 25, 2022	&#183; Twitter Web App </a></div><div class="">
   <div class="stats">
       <a href="#">
-        <i data-feather="message-square" style="position:relative;top:4px;height:20px"></i> 161
+        2,316 Retweets
       </a>
       <a href="#">
-        <i data-feather="repeat" style="position:relative;top:3px;height:20px"></i> 650
+        3,004 Quote Tweets
       </a>
       <a href="#">
-        <i data-feather="heart" style="position:relative;top:3px;height:19px"></i> 3.4K
+        46.8K Likes
       </a>
     </div>
-  </div></blockquote>
+  </div></blockquote></div>
 <script>
 feather.replace()
 </script>

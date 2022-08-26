@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const fetch=require('node-fetch');
 const details = require('../middleware/details');
+const authUrl = require('../middleware/authUrl');
 
 
 //Template
@@ -10,12 +11,21 @@ router.post("/",async(req,res)=>{
     console.log(req.body);
 
     const tweet_id=String(twtUrl.split('/').slice(-1))
-    // console.log(`${tweet_id}.../`);
+
 
     const tweet=await details.tweet(tweet_id)
 
+    const authorizationUrl=authUrl.genAuthUrl()
 
-    const user=await details.user(tweet.data['author_id'])
+    let user=''
+    if (tweet.media) {
+      console.log('Media');
+      user=await details.user(tweet.data[0]['author_id'])
+    }else {
+      console.log('No media');
+      user=await details.user(tweet.data[0]['author_id'])
+    }
+
 
 
     const response=fetch("http://localhost:5000/createTweet",{
@@ -29,7 +39,7 @@ router.post("/",async(req,res)=>{
       })
     })
 
-    res.json({"Status":"Done"})
+    res.json({Status:"Done",authorizationUrl:authorizationUrl})
 
   } catch (e) {
     console.log(e.message);

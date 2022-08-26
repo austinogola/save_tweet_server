@@ -12,16 +12,15 @@ router.post('/',async(req,res)=>{
 
     const starter=template.templateStart
     const image=template.addImage(user.profile_image_url)
-    const userDetails=template.addUser(user.name,user.username,user.verified)
+    const userDetails=template.addUser(user.name,user.username)
 
     let text='',media='',mets='',stats=''
     if (tweet.media) {
       media=template.addMedia(tweet.media)
-      console.log(tweet.media);
+      // console.log(tweet.media);
     }
 
-    const entities=tweet.data[0].entities?tweet.data[0].entities:{}
-    text=template.addText(tweet.data[0].text,entities)
+    text=template.addText(tweet.data[0].text)
     mets=template.addMets(tweet.data[0].created_at,tweet.data[0].source)
     const{retweet_count,quote_count,like_count}=tweet.data[0].public_metrics
     stats=template.addStats(retweet_count,quote_count,like_count)
@@ -42,24 +41,6 @@ router.post('/',async(req,res)=>{
                 fs.appendFile(`${tweet.data[0].id}.html`,stats,async()=>{
                   fs.appendFile(`${tweet.data[0].id}.html`,end,async()=>{
                     console.log('File created');
-                    try {
-                      fetch(`http://localhost:5000/screenshot/shot`,{
-                        method:'POST',
-                        headers:{
-                          "Content-Type":"application/json"
-                        },
-                        body:JSON.stringify({
-                          name:tweet.data[0].id
-                        })
-                      }).then(async response=>{
-                        const resp=await response.json()
-                        res.send(resp)
-                      })
-                    }
-                    catch (e) {
-                      console.log(e.message);
-                      res.send(e.message)
-                    }
                   })
                 })
               })
@@ -68,6 +49,25 @@ router.post('/',async(req,res)=>{
         })
       })
     })
+
+    try {
+      fetch(`http://localhost:5000/screenshot/shot`,{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          name:tweet.data[0].id
+        })
+      }).then(async response=>{
+        const resp=await response.json()
+        res.send(resp)
+      })
+    }
+    catch (e) {
+      console.log(e.message);
+      res.send(e.message)
+    }
 
 
   } catch (e) {

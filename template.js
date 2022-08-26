@@ -5,6 +5,12 @@ const templateStart=`<!DOCTYPE html>
     <title>Tweet page</title>
     <script src="https://unpkg.com/feather-icons"></script>
     <style media="screen">
+      .wrapperGG{
+        max-width:740px;
+        display:flex;
+        justify-content:center;
+        padding:10px;
+      }
       blockquote.twitter-tweet {
         display: inline-block;
         font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
@@ -19,7 +25,7 @@ const templateStart=`<!DOCTYPE html>
         margin: 10px 5px;
         padding: 0 16px 16px 16px;
         min-width: 490px;
-        max-width: 508px;
+        width: 100%;
       }
       blockquote.twitter-tweet p {
         font-size: 18px;
@@ -46,6 +52,9 @@ const templateStart=`<!DOCTYPE html>
       .profile{
         display: flex;
         margin-bottom: 16px;
+      }
+      span{
+        color:#34A5F2;
       }
       #username{
         position: relative;
@@ -86,24 +95,68 @@ const templateStart=`<!DOCTYPE html>
     </style>
   </head>
   <body>
-    </div>
-    <blockquote class="twitter-tweet"><p lang="en" dir="ltr">
-      <div class="profile">`
+    <div class="wrapperGG">
+      <blockquote class="twitter-tweet"><p lang="en" dir="ltr">
+        <div class="profile">`
 
 
 const addImage=(imageUrl)=>{
-  let html=`  <img src="${imageUrl}" alt="Avatar" class="avatar">`
+  let html=`
+    <img src="${imageUrl}" alt="Avatar" class="avatar">`
 
   return html
 }
 
-const addUser=(name,username)=>{
-  let html=`<div id="username"> ${name} <br/><a href="#">@${username}</a></div></div>`
+const addUser=(name,username,verified)=>{
+  let html=`<div id="username"> ${name}  `
+
+  if(verified){
+    html+=`<img src="https://i.postimg.cc/63ngHVjT/verified-badge-16.png" style='position:relative;top:3px;'alt="verified">`
+  }
+  html+=`<br/>
+  <a href="#">@${username}</a>
+  </div>
+  </div>`
 
   return html
 }
 
-const addText=(text)=>{
+const formEntities=(obj)=>{
+  let blues=[]
+
+  if (obj.mentions) {
+    obj.mentions.forEach(mention=>{
+      blues.push(`@${mention.username}`)
+    })
+  }
+
+  if(obj.hashtags){
+    obj.hashtags.forEach(hashtag=>{
+      blues.push(`#${hashtag.tag}`)
+    })
+  }
+  return blues
+}
+
+const addText=(text,entities)=>{
+  text=text.split(' ')
+  if(text[text.length-1].includes('https://t')){
+    text.pop()
+  }
+  const blues=formEntities(entities)
+
+  text.forEach(word=>{
+    blues.forEach(blue=>{
+      if (word.includes(blue)){
+        let newWord=word.replace(blue,`<span>${blue}</span>`)
+        const wordIndex=text.indexOf(word)
+        text.splice(wordIndex,1,newWord)
+
+      }
+    })
+  })
+
+  text=text.join(' ')
   let html=`<p>${text}</p>`
 
   return html
@@ -116,45 +169,88 @@ const addMets=(created_at,source)=>{
   // let html=`<div class="mets">
   //   <a href="#">12:00 PM June 11, 2022 from Nairobi, Kenya</a>
   // </div>`
-  const mets=created_at.split('-')
-  const year=mets[0]
-  let time=mets[2].slice(3,8)
-  parseInt(time.split(0,2))>=12?time+=' PM':time+=' AM'
 
-  const month=getMonth(parseInt(mets[1]))
-
-  const date=mets[2].slice(0,2)
-  console.log(date);
-
-  // const date=new Date(created_at)
-  // console.log(date.getUTCHours()); // Hours
-  // console.log(date.getUTCMinutes());
-  // console.log(date.getUTCSeconds());
-  // console.log(date.getUTCMonth())
+  var d=new Date(created_at)
+  // console.log(d.toString());
+  const year=d.getFullYear()
+  const month=getMonth(d.getMonth())
+  const date=d.getDate()
+  const minutes=d.getMinutes()>10?d.getMinutes():`0${d.getMinutes()}`
+  const hours=d.getHours()>12?d.getHours()-12:d.getHours()
+  let time=d.getHours()>12?`${hours}:${minutes} PM`:`${hours}:${minutes} AM`
 
 
-  let html=`<div class="mets"><a href="#">${time} ${month} ${date}, ${year}	&#183; ${source} </a></div>`
+
+  // parseInt(time.split(':'))>=12?time+=' PM':time+=' AM'
+
+  let html=`<div class="mets"><a href="#">${time} &#183; ${month} ${date}, ${year}	&#183; ${source} </a></div>`
 
   return html
 }
 
-// const getDate=(created_at)=>{
-//   var months = [
-//     "January", "February", "March", "April", "May", "June",
-//     "July", "August", "September", "October", "November", "December"
-//   ];
-//
-//   let year=created_at[0:4]
-//   let month=months[6]
-//   let date=created_at[8:10]
-// }
+
 const getMonth=(n)=>{
   var months = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ];
+    return months[n]
+}
 
-    return months[n-1]
+const addMedia=(media)=>{
+  if(media[0].type=='video'){
+    let html=`<div class="media" style="height:480px;margin-bottom:15px;border:1px solid #CFD9DE;border-radius:15px;overflow:hidden;background-image:url('${media[0].preview_image_url}');background-size:cover;background-position:center;background-repeat:no-repeat;">
+      <!--<img src="${media[0].preview_image_url}" alt="" style="width:100%;max-height:100%">-->
+    </div>`
+
+    return html
+
+  }else{
+    if (media.length==1) {
+      let html=`
+      <div class="media" style="height:480px;border:1px solid #CFD9DE;border-radius:15px;overflow:hidden;background-image:url('${media[0].url}');background-size:cover;background-position:center;background-repeat:no-repeat;margin-bottom:15px;">
+        <!--<img src="${media[0].url}" alt="" style="max-width:100%;max-height:100%">-->
+      </div>
+      `
+
+      return html
+    }
+    if (media.length%2==0) {
+      let rmved=`<img src="" alt="" style="max-width:100%;height:100%">
+      <div style="display:flex;justify-content:center;margin-bottom:15px;">`
+
+      let html=`
+      <div class="media" style="height:480px;margin-bottom:15px;display:grid;grid-template-columns:50% 50%;grid-gap:3px;border:1px solid #CFD9DE;border-radius:15px;overflow:hidden;">`
+      media.forEach(item=>{
+        html+=`<div class="" style='background-image:url("${item.url}");background-size:cover;background-position:center;background-repeat:no-repeat;'>
+
+        </div>`
+      })
+      html+=`</div>`
+
+      return html;
+    }else{
+      let html=`
+      <div class="media" style="height:480px;margin-bottom:15px;display:grid;grid-template-columns:50% 50%;grid-column-gap:3px;border:1px solid #CFD9DE;border-radius:15px;overflow:hidden;">
+        <div class="main" style='background-image:url("${media[0].url}");background-size:cover;background-position:center;background-repeat:no-repeat;'>
+          <!--<img src="${media[0].url}" alt="" style="max-width:100%;max-height:100%;">-->
+        </div>
+        <div class="others" style="display:grid;grid-template-rows:50% 50%;grid-gap:3px;">
+          <div class="" style='background-image:url("${media[1].url}");background-size:cover;background-position:center;background-repeat:no-repeat;'>
+            <!--<img src="${media[1].url}" alt="" style="max-width:100%;max-height:100%;">-->
+          </div>
+          <div class="" style='background-image:url("${media[2].url}");background-size:cover;background-position:center;background-repeat:no-repeat;'>
+            <!--<img src="${media[2].url}" alt="" style="max-width:100%;max-height:100%;">-->
+          </div>
+        </div>
+
+      </div>`
+
+      return html
+    }
+  }
+
+
 }
 
 const formatCounts=(count)=>{
@@ -191,7 +287,7 @@ const addStats=(retweets,quotes,likes)=>{
   return html
 }
 
-const templateEnd=`</blockquote>
+const templateEnd=`</blockquote></div>
 <script>
 feather.replace()
 </script>
@@ -199,4 +295,4 @@ feather.replace()
 </html>`
 
 
-module.exports = {templateStart,addImage,addUser,addText,addMets,addStats,templateEnd};
+module.exports = {templateStart,addImage,addUser,addText,addMedia,addMets,addStats,templateEnd};
