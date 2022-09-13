@@ -5,10 +5,7 @@ const template = require('../template');
 
 router.post('/',async(req,res)=>{
   try {
-
-    const tweet=req.body.tweet
-    const user=req.body.user
-
+    const {tweet,user,st_id}=req.body
 
     const starter=template.templateStart
     const image=template.addImage(user.profile_image_url)
@@ -49,7 +46,8 @@ router.post('/',async(req,res)=>{
                           "Content-Type":"application/json"
                         },
                         body:JSON.stringify({
-                          name:tweet.data[0].id
+                          name:tweet.data[0].id,
+                          // st_id:st_id
                         })
                       }).then(async response=>{
                         const resp=await response.json()

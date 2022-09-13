@@ -28,4 +28,8 @@ router.post('/shot',async(req,res)=>{
   res.json({"Status":"Screenshot taken"})
 })
 
+router.post('/sendFile',async(req,res)=>{
+  
+})
+
 module.exports = router;
