@@ -14,7 +14,6 @@ router.post('/',async(req,res)=>{
     let text='',media='',mets='',stats=''
     if (tweet.media) {
       media=template.addMedia(tweet.media)
-      console.log(tweet.media);
     }
 
     const entities=tweet.data[0].entities?tweet.data[0].entities:{}
@@ -25,7 +24,7 @@ router.post('/',async(req,res)=>{
 
     text=text.replace(/\n/g,'<br/>')
 
-    // console.log(media,mets,stats);
+
 
     const end=template.templateEnd
 
@@ -38,7 +37,7 @@ router.post('/',async(req,res)=>{
               fs.appendFile(`${tweet.data[0].id}.html`,mets,async()=>{
                 fs.appendFile(`${tweet.data[0].id}.html`,stats,async()=>{
                   fs.appendFile(`${tweet.data[0].id}.html`,end,async()=>{
-                    console.log('File created');
+                    // console.log('File created');
                     try {
                       fetch(`http://localhost:5000/screenshot/shot`,{
                         method:'POST',
@@ -51,6 +50,7 @@ router.post('/',async(req,res)=>{
                         })
                       }).then(async response=>{
                         const resp=await response.json()
+                        console.log(resp);
                         res.send(resp)
                       })
                     }

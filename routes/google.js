@@ -50,6 +50,12 @@ router.post('/upload',async(req,res)=>{
   const file=fs.readFileSync(`../server/${tweet_id}.png`, 'binary')
   const photo=Buffer.from(file,'binary')
 
+  try{
+    fs.unlinkSync(`../server/${tweet_id}.png`)
+  }catch(err){
+    console.log(err.message);
+  }
+
   // res.send(photo
 
   //list albums

@@ -12,20 +12,16 @@ router.post("/",async(req,res)=>{
 
 
     const tweet_id=String(twtUrl.split('/').slice(-1))
-    
-    const authorizationUrl=authUrl.genAuthUrl(tweet_id)
 
 
     const tweet=await details.tweet(tweet_id)
 
-    let user=''
-    if (tweet.media) {
-      user=await details.user(tweet.data[0]['author_id'])
+    const user=await details.user(tweet.data[0]['author_id'])
 
-    }else {
-      console.log('No media');
-      user=await details.user(tweet.data[0]['author_id'])
-
+    const authorizationUrl=authUrl.genAuthUrl(tweet_id)
+    
+    if(tweet){
+      res.json({authorizationUrl:authorizationUrl})
     }
 
   fetch("http://localhost:5000/createTweet",{
@@ -41,12 +37,11 @@ router.post("/",async(req,res)=>{
     }).then(async response=>{
       const resp=await response.json()
       console.log(resp);
+      // res.json({Status:"Done",authorizationUrl:authorizationUrl})
     })
 
-    res.json({Status:"Done",authorizationUrl:authorizationUrl})
-
   } catch (e) {
-    console.log(e.message);
+    res.status(400).json({"Error":"Bad request"})
   }
 })
 
