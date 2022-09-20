@@ -37,27 +37,7 @@ router.post('/',async(req,res)=>{
               fs.appendFile(`${tweet.data[0].id}.html`,mets,async()=>{
                 fs.appendFile(`${tweet.data[0].id}.html`,stats,async()=>{
                   fs.appendFile(`${tweet.data[0].id}.html`,end,async()=>{
-                    // console.log('File created');
-                    try {
-                      fetch(`http://localhost:5000/screenshot/shot`,{
-                        method:'POST',
-                        headers:{
-                          "Content-Type":"application/json"
-                        },
-                        body:JSON.stringify({
-                          name:tweet.data[0].id,
-                          // st_id:st_id
-                        })
-                      }).then(async response=>{
-                        const resp=await response.json()
-                        console.log(resp);
-                        res.send(resp)
-                      })
-                    }
-                    catch (e) {
-                      console.log(e.message);
-                      res.send(e.message)
-                    }
+                    
                   })
                 })
               })

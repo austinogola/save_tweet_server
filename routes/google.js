@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const fetch=require('node-fetch');
+const path = require('path');
 const {google} = require('googleapis');
 require('dotenv').config()
 const fs = require('fs');
@@ -11,47 +12,86 @@ router.post('/api',async(req,res)=>{
 router.get('/api',async(req,res)=>{
   if(req.query.code){
     let code=req.query.code
-    let tweet_id=req.query.state
+    let state=req.query.state
+    const tweet_id=state.split('.')[0]
+    const st_id=state.split('.')[1]
+
     // let url1='https://oauth2.googleapis.com/token'
-    let url = new URL("https://oauth2.googleapis.com/token")
-    let params = {
-      client_id:process.env.client_id,
-      client_secret:process.env.client_secret,
-      code:code,
-      redirect_uri:'http://localhost:5000/google/api',
-      grant_type:'authorization_code'
-    }
 
-    Object.keys(params).forEach(key=>{
-      url.searchParams.append(key, params[key])
-    })
-
-    fetch(url,{
+    fetch('http://localhost:5000/google/token',{
       method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-    }).then(res=>res.json()).then(async result=>{
-      let token=await result.access_token
-      fetch('http://localhost:5000/google/upload',{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({token:token,tweet_id:tweet_id})
-      })
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({code:code,tweet_id:tweet_id,st_id:st_id})
+
     })
   }
-  res.send("Working 1")
+  res.sendFile(path.join(__dirname,"auth.html"))
 })
 
 
+router.post("/token",async(req,res)=>{
+  const {code,tweet_id,st_id}=req.body
+
+  let url = new URL("https://oauth2.googleapis.com/token")
+  let params = {
+    client_id:process.env.client_id,
+    client_secret:process.env.client_secret,
+    code:code,
+    redirect_uri:'http://localhost:5000/google/api',
+    grant_type:'authorization_code'
+  }
+
+  Object.keys(params).forEach(key=>{
+    url.searchParams.append(key, params[key])
+  })
+
+  fetch(url,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+  })
+  .then(res=>res.json())
+  .then(async result=>{
+    let token=await result.access_token
+    fetch('http://localhost:5000/id/update',{
+      method:'POST',
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({st_id:st_id,token:token})
+    })
+
+    fetch('http://localhost:5000/google/upload',{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({token:token,tweet_id:tweet_id})
+    })
+  })
+})
+
 router.post('/upload',async(req,res)=>{
   const {token,tweet_id}=req.body
-  console.log(token,'here---token');
+  // let fileExists=fs.existsSync(`../server/${tweet_id}.png`)
+
+  await fetch(`http://localhost:5000/screenshot/shot`,{
+    method:'POST',
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      name:tweet_id,
+      // st_id:st_id
+    })
+  }).then(async response=>{
+    const resp=await response.json()
+    res.send(resp)
+  })
+
   const file=fs.readFileSync(`../server/${tweet_id}.png`, 'binary')
   const photo=Buffer.from(file,'binary')
 
   try{
     fs.unlinkSync(`../server/${tweet_id}.png`)
+    fs.unlinkSync(`../server/${tweet_id}.html`)
   }catch(err){
     console.log(err.message);
   }
@@ -94,7 +134,6 @@ router.post('/upload',async(req,res)=>{
       }).then(async result=>{
         let upload_token=await result.text()
         //batchCreate
-        console.log(albumId);
         fetch('https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate',{
           method:"POST",
           headers:{
@@ -114,7 +153,8 @@ router.post('/upload',async(req,res)=>{
             }
           )
         }).then(result=>result.json()).then(data=>{
-          console.log(data.newMediaItemResults[0]);
+          const status=data.newMediaItemResults[0].status
+          console.log(status);
         })
 
       })
@@ -143,7 +183,6 @@ router.post('/upload',async(req,res)=>{
         }).then(async result=>{
           let upload_token=await result.text()
           //batchCreate
-          console.log(albumId);
           fetch('https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate',{
             method:"POST",
             headers:{
@@ -163,7 +202,8 @@ router.post('/upload',async(req,res)=>{
               }
             )
           }).then(result=>result.json()).then(data=>{
-            console.log(data.newMediaItemResults[0]);
+            const status=data.newMediaItemResults[0].status
+            console.log(status);
           })
 
         })

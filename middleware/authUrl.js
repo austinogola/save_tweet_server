@@ -2,7 +2,7 @@ const {google} = require('googleapis');
 require('dotenv').config()
 
 
-const genAuthUrl=(tweet_id)=>{
+const genAuthUrl=(tweet_id,st_id)=>{
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
@@ -15,7 +15,7 @@ const genAuthUrl=(tweet_id)=>{
     access_type: 'offline',
     scope: scopes,
     include_granted_scopes: true,
-    state:tweet_id
+    state:`${tweet_id}.${st_id}`
   })
 
   return authorizationUrl
