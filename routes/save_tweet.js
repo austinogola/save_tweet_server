@@ -104,7 +104,8 @@ router.post("/",async(req,res)=>{
       })
     }
   } catch (e) {
-    res.status(400).json({"Error":e.mesage})
+
+    res.status(400).json({"Error":e.message})
   }
 })
 
