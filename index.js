@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app=express()
+const port=process.env.PORT || 5000
 
 app.use(cors())
 app.use(express.json())
@@ -15,6 +16,6 @@ app.use('/id',require('./routes/id'))
 app.use('/firebase',require('./routes/firebase'))
 app.use('/test',require('./routes/test'))
 
-app.listen(5000,()=>{
-  console.log('Server Running Good on Port 5000');
+app.listen(port,()=>{
+  console.log(`Server Running Good on Port ${port}`);
 })
