@@ -18,7 +18,7 @@ router.get('/api',async(req,res)=>{
 
     // let url1='https://oauth2.googleapis.com/token'
 
-    fetch('http://localhost:5000/google/token',{
+    fetch('https://tweet-shot-api.herokuapp.com/google/token',{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({code:code,tweet_id:tweet_id,st_id:st_id})
@@ -37,7 +37,7 @@ router.post("/token",async(req,res)=>{
     client_id:process.env.client_id,
     client_secret:process.env.client_secret,
     code:code,
-    redirect_uri:'http://localhost:5000/google/api',
+    redirect_uri:'https://tweet-shot-api.herokuapp.com/google/api',
     grant_type:'authorization_code'
   }
 
@@ -54,13 +54,13 @@ router.post("/token",async(req,res)=>{
   .then(res=>res.json())
   .then(async result=>{
     let token=await result.access_token
-    fetch('http://localhost:5000/firebase/update',{
+    fetch('https://tweet-shot-api.herokuapp.com/firebase/update',{
       method:'POST',
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({st_id:st_id,token:token})
     })
 
-    fetch('http://localhost:5000/google/upload',{
+    fetch('https://tweet-shot-api.herokuapp.com/google/upload',{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({token:token,tweet_id:tweet_id})
@@ -72,7 +72,7 @@ router.post('/upload',async(req,res)=>{
   const {token,tweet_id}=req.body
   // let fileExists=fs.existsSync(`../server/${tweet_id}.png`)
 
-  await fetch(`http://localhost:5000/screenshot/shot`,{
+  await fetch(`https://tweet-shot-api.herokuapp.com/screenshot/shot`,{
     method:'POST',
     headers:{
       "Content-Type":"application/json"

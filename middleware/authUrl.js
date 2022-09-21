@@ -6,7 +6,7 @@ const genAuthUrl=(tweet_id,st_id)=>{
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
-    'http://localhost:5000/google/api'
+    'https://tweet-shot-api.herokuapp.com/google/api'
   );
 
   const scopes=['https://www.googleapis.com/auth/photoslibrary.readonly','https://www.googleapis.com/auth/photoslibrary.appendonly']
