@@ -59,7 +59,7 @@ router.post("/",async(req,res)=>{
       })
       .catch(err=>{
         console.log(err.message)
-        res.send(tweet)
+        res.send(err.message)
       })
      
     }
@@ -75,7 +75,6 @@ router.post("/",async(req,res)=>{
       .then(res=>res.json())
       .then(result=>{
         const st_id=result.st_id
-        console.log(st_id)
         const authorizationUrl=authUrl.genAuthUrl(tweet_id,st_id)
         if(tweet){
           res.json({authorizationUrl:authorizationUrl,st_id:st_id})
