@@ -13,7 +13,7 @@ router.post('/shot',async(req,res)=>{
     defaultViewport: {width: 800, height: 900}
   })
   const page=await browser.newPage()
-  await page.goto(`http://localhost:5000/render/${name}`)
+  await page.goto(`https://tweet-shot-api.herokuapp.com/render/${name}`)
 
   await page.waitForSelector('.wrapperGG');
   const element=await page.$('.wrapperGG')

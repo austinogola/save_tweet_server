@@ -93,9 +93,6 @@ router.post("/",async(req,res)=>{
           }).then(async response=>{
             const resp=await response.json()
           })
-          .catch(err=>{
-            res.send(err.message)
-          })
       
         }
       })

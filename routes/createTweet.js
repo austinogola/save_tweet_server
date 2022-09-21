@@ -37,6 +37,7 @@ router.post('/',async(req,res)=>{
               fs.appendFile(`${tweet.data[0].id}.html`,mets,async()=>{
                 fs.appendFile(`${tweet.data[0].id}.html`,stats,async()=>{
                   fs.appendFile(`${tweet.data[0].id}.html`,end,async()=>{
+                    res.status(200).json({"Status":"File created"})
                     
                   })
                 })
