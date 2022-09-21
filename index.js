@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app=express()
-const port=process.env.PORT || 5000
+const port=process.env.PORT || 6000
 
 app.use(cors())
 app.use(express.json())
@@ -17,16 +17,16 @@ app.use('/firebase',require('./routes/firebase'))
 app.use('/test',require('./routes/test'))
 
 
-process.on('uncaughtException', (error)  => {
-  console.log('Alert! ERROR : ',  error);
-  process.exit(1); // Exit your app 
-})
+// process.on('uncaughtException', (error)  => {
+//   console.log('Alert! ERROR : ',  error);
+//   process.exit(1); // Exit your app 
+// })
 
 
-process.on('unhandledRejection', (error, promise)  => {
-  console.log('Alert! ERROR : ',  error);
-  process.exit(1); // Exit your app 
-})
+// process.on('unhandledRejection', (error, promise)  => {
+//   console.log('Alert! ERROR : ',  error);
+//   process.exit(1); // Exit your app 
+// })
 
 
 app.listen(port,()=>{

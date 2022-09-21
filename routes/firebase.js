@@ -27,7 +27,7 @@ const firebaseConfig = {
 
   router.get('/new',async(req,res)=>{
     const docRef=await addDoc(collRef,{})
-    const st_id=await docRef.id
+    const st_id= docRef.id
     res.status(200).json({st_id:st_id})
   })
 

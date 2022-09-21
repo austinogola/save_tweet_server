@@ -15,7 +15,7 @@ router.post("/",async(req,res)=>{
 
     if(st_id){
       let url= 'https://tweet-shot-api.herokuapp.com/createTweet'
-      // let url="http://localhost:5000/createTweet"
+      // let url="http://localhost:6000/createTweet"
       fetch(url,{
         method:"POST",
         headers:{
@@ -35,7 +35,7 @@ router.post("/",async(req,res)=>{
       })
 
       const url2= 'https://tweet-shot-api.herokuapp.com/firebase/getToken'
-      // const url2='http://localhost:5000/firebase/getToken'
+      // const url2='http://localhost:6000/firebase/getToken'
       fetch(url2,{
         method:'POST',
         headers:{
@@ -50,7 +50,7 @@ router.post("/",async(req,res)=>{
         const token=results.token
 
         const url3='https://tweet-shot-api.herokuapp.com/google/upload'
-        // const url3='http://localhost:5000/google/upload'
+        // const url3='http://localhost:6000/google/upload'
         fetch(url3,{
           method:"POST",
           headers:{"Content-Type":"application/json"},
@@ -65,7 +65,7 @@ router.post("/",async(req,res)=>{
     }
     else{
       const url4='https://tweet-shot-api.herokuapp.com/firebase/new'
-      // const url4='http://localhost:5000/firebase/new'
+      // const url4='http://localhost:6000/firebase/new'
       fetch(url4,{
         method:'GET',
         headers:{
@@ -80,7 +80,7 @@ router.post("/",async(req,res)=>{
           res.json({authorizationUrl:authorizationUrl,st_id:st_id})
           
           const url5='https://tweet-shot-api.herokuapp.com/createTweet'
-          // const url5="http://localhost:5000/createTweet"
+          // const url5="http://localhost:6000/createTweet"
           fetch(url5,{
             method:"POST",
             headers:{
