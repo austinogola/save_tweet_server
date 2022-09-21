@@ -14,8 +14,8 @@ router.post("/",async(req,res)=>{
     const user=await details.user(tweet.data[0]['author_id'])
 
     if(st_id){
-      // let url= 'http://127.0.0.1/createTweet'
-      let url="http://localhost:5000/createTweet"
+      let url= 'http://127.0.0.1/createTweet'
+      // let url="http://localhost:5000/createTweet"
       fetch(url,{
         method:"POST",
         headers:{
@@ -34,8 +34,8 @@ router.post("/",async(req,res)=>{
         res.send(err.message)
       })
 
-      // const url2= 'http://127.0.0.1/firebase/getToken'
-      const url2='http://localhost:5000/firebase/getToken'
+      const url2= 'http://127.0.0.1/firebase/getToken'
+      // const url2='http://localhost:5000/firebase/getToken'
       fetch(url2,{
         method:'POST',
         headers:{
@@ -49,8 +49,8 @@ router.post("/",async(req,res)=>{
       .then(results=>{
         const token=results.token
 
-        // const url3='http://127.0.0.1/google/upload'
-        const url3='http://localhost:5000/google/upload'
+        const url3='http://127.0.0.1/google/upload'
+        // const url3='http://localhost:5000/google/upload'
         fetch(url3,{
           method:"POST",
           headers:{"Content-Type":"application/json"},
@@ -64,8 +64,8 @@ router.post("/",async(req,res)=>{
      
     }
     else{
-      // const url4='http://127.0.0.1/firebase/new'
-      const url4='http://localhost:5000/firebase/new'
+      const url4='http://127.0.0.1/firebase/new'
+      // const url4='http://localhost:5000/firebase/new'
       fetch(url4,{
         method:'GET',
         headers:{
@@ -80,8 +80,8 @@ router.post("/",async(req,res)=>{
         if(tweet){
           res.json({authorizationUrl:authorizationUrl,st_id:st_id})
           
-          // const url5='http://127.0.0.1/createTweet'
-          const url5="http://localhost:5000/createTweet"
+          const url5='http://127.0.0.1/createTweet'
+          // const url5="http://localhost:5000/createTweet"
           fetch(url5,{
             method:"POST",
             headers:{
