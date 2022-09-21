@@ -27,6 +27,10 @@ router.post("/",async(req,res)=>{
       .then(async response=>{
         const resp=await response.json()
       })
+      .catch(err=>{
+        console.log(err.message)
+        res.send(err.message)
+      })
 
       fetch('http://localhost:5000/firebase/getToken',{
         method:'POST',
@@ -46,6 +50,10 @@ router.post("/",async(req,res)=>{
           headers:{"Content-Type":"application/json"},
           body:JSON.stringify({token:token,tweet_id:tweet_id})
         })
+      })
+      .catch(err=>{
+        console.log(err.message)
+        res.send(err.message)
       })
      
     }
@@ -81,7 +89,7 @@ router.post("/",async(req,res)=>{
       })
     }
   } catch (e) {
-    res.status(400).json({"Error":"Bad request"})
+    res.status(400).json({"Error":e.mesage})
   }
 })
 
