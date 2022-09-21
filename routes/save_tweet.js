@@ -13,7 +13,7 @@ router.post("/",async(req,res)=>{
     const tweet=await details.tweet(tweet_id)
     // const user=await details.user(tweet.data[0]['author_id'])
 
-    res.status(200).json({tweet:tweet})
+    res.status(200).json({tweet:tweet_id})
 
     // if(st_id){
     //   // let url= 'http://127.0.0.1/createTweet'
