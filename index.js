@@ -12,6 +12,8 @@ app.use('/createTweet',require('./routes/createTweet'))
 app.use('/render',require('./routes/render'))
 app.use('/google',require('./routes/google'))
 app.use('/id',require('./routes/id'))
+app.use('/firebase',require('./routes/firebase'))
+app.use('/test',require('./routes/test'))
 
 app.listen(5000,()=>{
   console.log('Server Running Good on Port 5000');

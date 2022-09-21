@@ -54,7 +54,7 @@ router.post("/token",async(req,res)=>{
   .then(res=>res.json())
   .then(async result=>{
     let token=await result.access_token
-    fetch('http://localhost:5000/id/update',{
+    fetch('http://localhost:5000/firebase/update',{
       method:'POST',
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({st_id:st_id,token:token})
