@@ -16,6 +16,19 @@ app.use('/id',require('./routes/id'))
 app.use('/firebase',require('./routes/firebase'))
 app.use('/test',require('./routes/test'))
 
+
+process.on('uncaughtException', (error)  => {
+  console.log('Alert! ERROR : ',  error);
+  process.exit(1); // Exit your app 
+})
+
+
+process.on('unhandledRejection', (error, promise)  => {
+  console.log('Alert! ERROR : ',  error);
+  process.exit(1); // Exit your app 
+})
+
+
 app.listen(port,()=>{
   console.log(`Server Running Good on Port ${port}`);
 })

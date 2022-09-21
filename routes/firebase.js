@@ -28,7 +28,7 @@ const firebaseConfig = {
   router.get('/new',async(req,res)=>{
     const docRef=await addDoc(collRef,{})
     const st_id=await docRef.id
-    res.json({st_id:st_id})
+    res.status(200).json({st_id:st_id})
   })
 
   router.post('/getToken',async(req,res)=>{
@@ -38,7 +38,7 @@ const firebaseConfig = {
 
     const token=docSnap.data().token
 
-    res.json({token:token})
+    res.status(200).json({token:token})
     
   })
 
