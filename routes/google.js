@@ -20,7 +20,10 @@ router.get('/api',async(req,res)=>{
 
     // let url1='https://oauth2.googleapis.com/token'
 
-    fetch('https://tweet-shot-api.herokuapp.com/google/token',{
+    let url1='https://tweet-shot-api.herokuapp.com/google/token'
+    // let url1='http://localhost:5000/google/token'
+
+    fetch(url1,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({code:code,tweet_id:tweet_id,st_id:st_id})
@@ -35,11 +38,14 @@ router.post("/token",async(req,res)=>{
   const {code,tweet_id,st_id}=req.body
 
   let url = new URL("https://oauth2.googleapis.com/token")
+  const redirect='https://tweet-shot-api.herokuapp.com/google/api'
+  // const redirect='http://localhost:5000/google/api'
+
   let params = {
     client_id:process.env.client_id,
     client_secret:process.env.client_secret,
     code:code,
-    redirect_uri:'https://tweet-shot-api.herokuapp.com/google/api',
+    redirect_uri:redirect,
     grant_type:'authorization_code'
   }
 
@@ -56,13 +62,18 @@ router.post("/token",async(req,res)=>{
   .then(res=>res.json())
   .then(async result=>{
     let token=await result.access_token
-    fetch('https://tweet-shot-api.herokuapp.com/firebase/update',{
+    const url2='https://tweet-shot-api.herokuapp.com/firebase/update'
+    // const url2='http://localhost:5000/firebase/update'
+    fetch(url2,{
       method:'POST',
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({st_id:st_id,token:token})
     })
 
-    fetch('https://tweet-shot-api.herokuapp.com/google/upload',{
+    const url3='https://tweet-shot-api.herokuapp.com/google/upload'
+    // const url3='http://localhost:5000/google/upload'
+
+    fetch(url3,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({token:token,tweet_id:tweet_id})
@@ -74,8 +85,11 @@ router.post("/token",async(req,res)=>{
 router.post('/upload',async(req,res)=>{
   const {token,tweet_id}=req.body
   // let fileExists=fs.existsSync(`../server/${tweet_id}.png`)
+  
 
-  await fetch(`https://tweet-shot-api.herokuapp.com/screenshot/shot`,{
+  const url='https://tweet-shot-api.herokuapp.com/screenshot/shot'
+  // const url='http://localhost:5000/screenshot/shot'
+  await fetch(url,{
     method:'POST',
     headers:{
       "Content-Type":"application/json"
@@ -89,12 +103,12 @@ router.post('/upload',async(req,res)=>{
     res.status(200).json(result)
   })
 
-  const file=fs.readFileSync(`../server/${tweet_id}.png`, 'binary')
+  const file=fs.readFileSync(`${tweet_id}.png`, 'binary')
   const photo=Buffer.from(file,'binary')
 
   try{
-    fs.unlinkSync(`../server/${tweet_id}.png`)
-    fs.unlinkSync(`../server/${tweet_id}.html`)
+    fs.unlinkSync(`${tweet_id}.png`)
+    fs.unlinkSync(`${tweet_id}.html`)
   }catch(err){
     console.log(err.message);
   }

@@ -3,10 +3,12 @@ require('dotenv').config()
 
 
 const genAuthUrl=(tweet_id,st_id)=>{
+  // const url='https://tweet-shot-api.herokuapp.com/google/api'
+  const url='http://localhost:5000/google/api'
   const oauth2Client = new google.auth.OAuth2(
     process.env.client_id,
     process.env.client_secret,
-    'https://tweet-shot-api.herokuapp.com/google/api'
+    url
   );
 
   const scopes=['https://www.googleapis.com/auth/photoslibrary.readonly','https://www.googleapis.com/auth/photoslibrary.appendonly']

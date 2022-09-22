@@ -6,25 +6,20 @@ const authUrl = require('../middleware/authUrl');
 router.post("/",async(req,res)=>{
   try {
     const {twtUrl,st_id}=req.body
-
-
     const tweet_id=String(twtUrl.split('/').slice(-1))
+
+    console.log(`Received url:${twtUrl}...${st_id}`)
     
     const tweet=await details.tweet(tweet_id)
     const user=await details.user(tweet.data[0]['author_id'])
 
+
     if(st_id){
       let url= 'https://tweet-shot-api.herokuapp.com/createTweet'
-      // let url="http://localhost:6000/createTweet"
-      fetch(url,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-        },
-        body:JSON.stringify({
-          tweet:tweet,
-          user:user
-        })
+      // let url="http://localhost:5000/createTweet"
+
+      fetch(url,{method:"POST",headers:{"Content-Type":"application/json",},
+        body:JSON.stringify({tweet:tweet,user:user})
       })
       .then(async response=>{
         const resp=await response.json()
@@ -36,27 +31,25 @@ router.post("/",async(req,res)=>{
       })
 
       const url2= 'https://tweet-shot-api.herokuapp.com/firebase/getToken'
-      // const url2='http://localhost:6000/firebase/getToken'
-      fetch(url2,{
-        method:'POST',
-        headers:{
-          "Content-Type":"application/json",
-        },
-        body:JSON.stringify({
-          st_id:st_id,
-        })
+      // const url2='http://localhost:5000/firebase/getToken'
+
+      fetch(url2,{method:'POST',headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({st_id:st_id})
       })
       .then(res=>res.json())
       .then(results=>{
         const token=results.token
 
         const url3='https://tweet-shot-api.herokuapp.com/google/upload'
-        // const url3='http://localhost:6000/google/upload'
-        fetch(url3,{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
+        // const url3='http://localhost:5000/google/upload'
+        fetch(url3,{method:"POST",headers:{"Content-Type":"application/json"},
           body:JSON.stringify({token:token,tweet_id:tweet_id})
         })
+        .then(async response=>{
+          const resp=await response.json()
+          console.log(resp)
+        })
+        
       })
       .catch(err=>{
         console.log(err.message)
@@ -65,9 +58,8 @@ router.post("/",async(req,res)=>{
      
     }
     else{
-      console.log('None of st_id')
       const url4='https://tweet-shot-api.herokuapp.com/firebase/new'
-      // const url4='http://localhost:6000/firebase/new'
+      // const url4='http://localhost:5000/firebase/new'
       fetch(url4,{
         method:'GET',
         headers:{
@@ -82,7 +74,7 @@ router.post("/",async(req,res)=>{
           res.json({authorizationUrl:authorizationUrl,st_id:st_id})
           
           const url5='https://tweet-shot-api.herokuapp.com/createTweet'
-          // const url5="http://localhost:6000/createTweet"
+          // const url5="http://localhost:5000/createTweet"
           fetch(url5,{
             method:"POST",
             headers:{
@@ -94,6 +86,7 @@ router.post("/",async(req,res)=>{
             })
           }).then(async response=>{
             const resp=await response.json()
+            console.log(resp)
           })
       
         }

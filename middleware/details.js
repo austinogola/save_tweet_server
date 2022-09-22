@@ -17,6 +17,8 @@ const tweet=async (id)=>{
     })
     const resp=await response.json()
 
+    console.log(process.env.twitter_Token)
+
     const tweet={}
 
     tweet.data=resp['data']
@@ -24,6 +26,7 @@ const tweet=async (id)=>{
     if (resp['includes']) {
       tweet.media=resp['includes']['media']
     }
+
 
 
     return tweet;
