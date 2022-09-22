@@ -11,15 +11,18 @@ router.post('/shot',async(req,res)=>{
   const {name}=req.body
   console.log(`${name}...hot`);
   const browser=await puppeteer.launch({
-    headless:true,
+    headless:false,
     defaultViewport: {width: 800, height: 900},
     args: ['--no-sandbox','--disable-setuid-sandbox']
   })
   const page=await browser.newPage()
   const url='https://tweet-shot-api.herokuapp.com/render/'
   // const url='http://localhost:5000/render/'
+  const navigationPromise = page.waitForNavigation({waitUntil: "domcontentloaded"});
 
   await page.goto(`${url}${name}`)
+
+  await navigationPromise;
 
   await page.waitForSelector('.wrapperGG');
   const element=await page.$('.wrapperGG')
