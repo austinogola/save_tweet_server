@@ -83,9 +83,10 @@ router.post('/upload',async(req,res)=>{
     body:JSON.stringify({
       name:tweet_id
     })
-  }).then(async response=>{
-    const resp=await response.json()
-    res.send(resp)
+  })
+  .then(async response=>response.json())
+  .then(result=>{
+    res.status(200).json(result)
   })
 
   const file=fs.readFileSync(`../server/${tweet_id}.png`, 'binary')
