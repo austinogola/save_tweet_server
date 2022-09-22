@@ -20,6 +20,8 @@ const genAuthUrl=(tweet_id,st_id)=>{
     state:`${tweet_id}.${st_id}`
   })
 
+  console.log(url)
+
   return authorizationUrl
 }
 
