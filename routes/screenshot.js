@@ -11,7 +11,7 @@ router.post('/shot',async(req,res)=>{
   const {name}=req.body
   console.log(`${name}...hot`);
   const browser=await puppeteer.launch({
-    headless:false,
+    headless:true,
     defaultViewport: {width: 800, height: 900},
     args: ['--no-sandbox','--disable-setuid-sandbox']
   })
