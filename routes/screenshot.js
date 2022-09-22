@@ -23,7 +23,7 @@ router.post('/shot',async(req,res)=>{
   // console.log(encodeImageFileAsURL(img));
   await browser.close()
   // const dts=fs.readFileSync(path.join(__dirname+'/1535547400881848320.png'),{encoding:'base64'})
-  res.status(200).json({'Status':'Screenshot taken'})
+  res.status(200).json({"Status":"Screenshot taken"})
 })
 
 router.post('/sendFile',async(req,res)=>{

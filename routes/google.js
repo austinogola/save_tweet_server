@@ -16,6 +16,8 @@ router.get('/api',async(req,res)=>{
     const tweet_id=state.split('.')[0]
     const st_id=state.split('.')[1]
 
+    console.log("Code received")
+
     // let url1='https://oauth2.googleapis.com/token'
 
     fetch('https://tweet-shot-api.herokuapp.com/google/token',{
@@ -65,6 +67,7 @@ router.post("/token",async(req,res)=>{
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({token:token,tweet_id:tweet_id})
     })
+    console.log("Token gotten")
   })
 })
 
@@ -78,8 +81,7 @@ router.post('/upload',async(req,res)=>{
       "Content-Type":"application/json"
     },
     body:JSON.stringify({
-      name:tweet_id,
-      // st_id:st_id
+      name:tweet_id
     })
   }).then(async response=>{
     const resp=await response.json()

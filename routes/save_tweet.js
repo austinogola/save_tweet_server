@@ -28,6 +28,7 @@ router.post("/",async(req,res)=>{
       })
       .then(async response=>{
         const resp=await response.json()
+        console.log(resp);
       })
       .catch(err=>{
         console.log(err.message)
@@ -64,6 +65,7 @@ router.post("/",async(req,res)=>{
      
     }
     else{
+      console.log('None of st_id')
       const url4='https://tweet-shot-api.herokuapp.com/firebase/new'
       // const url4='http://localhost:6000/firebase/new'
       fetch(url4,{
